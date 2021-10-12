@@ -38,9 +38,9 @@ services:
       ### Not Secure ###
       - traefik.http.routers.service_url-unsecured.rule=Host(`u.getitqec.com`)
       - traefik.http.routers.service_url-unsecured.entrypoints=http
-      # - traefik.http.routers.service_url-unsecured.middlewares=redirect@file # uncomment to enable ssl when 443 is ready
+      - traefik.http.routers.service_url-unsecured.middlewares=redirect@file # uncomment to enable ssl when 443 is ready
 
-      # vexsdev.getitqec.com
+      # vexsdev.getitqec.com (backup)
       - traefik.http.services.service_url2.loadbalancer.server.port=5000
       - traefik.http.routers.service_url2.service=service_url
       - traefik.http.routers.service_url2.rule=Host(`vexsdev.getitqec.com`)
@@ -49,7 +49,7 @@ services:
       ### Not Secure ###
       - traefik.http.routers.service_url2-unsecured.rule=Host(`vexsdev.getitqec.com`)
       - traefik.http.routers.service_url2-unsecured.entrypoints=http
-      # - traefik.http.routers.service_url2-unsecured.middlewares=redirect@file # uncomment to enable ssl when 443 is ready
+      - traefik.http.routers.service_url2-unsecured.middlewares=redirect@file # uncomment to enable ssl when 443 is ready
     container_name: service_url
 
 networks:
