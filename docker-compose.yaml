@@ -1,0 +1,46 @@
+version: '3.7'
+services:
+
+  mongodb_url:
+    image: mongo
+    restart: always
+    networks:
+      - server
+    ports:
+      - 27017:27017 # local access
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./mongo-volume:/data/db
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo-js:ro
+    container_name: mongodb_url
+  
+  service_url:
+    # build: .
+    depends_on:
+      - mongodb_url
+    build: .
+    restart: always
+    environment:
+      MONGODB_URL: mongodb://${DB_USERNAME}:${DB_PASSWORD}@mongodb_url:27017/db?authSource=admin&readPreference=primary
+    networks:
+      - server
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=server
+      # getitqec.com
+      - traefik.http.services.service_url.loadbalancer.server.port=5000
+      - traefik.http.routers.service_url.service=service_url
+      - traefik.http.routers.service_url.rule=Host(`u.getitqec.com`)
+      - traefik.http.routers.service_url.entrypoints=https
+      - traefik.http.routers.service_url.tls.certresolver=mytlschallenge
+      ### Not Secure ###
+      - traefik.http.routers.service_url-unsecured.rule=Host(`u.getitqec.com`)
+      - traefik.http.routers.service_url-unsecured.entrypoints=http
+      - traefik.http.routers.service_url-unsecured.middlewares=redirect@file # uncomment to enable ssl when 443 is ready
+    container_name: service_url
+
+networks:
+  server:
+    external: true
