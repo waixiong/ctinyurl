@@ -36,6 +36,7 @@ services:
       - traefik.http.routers.service_url.entrypoints=https
       - traefik.http.routers.service_url.tls.certresolver=mytlschallenge
       ### Not Secure ###
+      - traefik.http.routers.service_url-unsecured.service=service_url
       - traefik.http.routers.service_url-unsecured.rule=Host(`u.getitqec.com`)
       - traefik.http.routers.service_url-unsecured.entrypoints=http
       - traefik.http.routers.service_url-unsecured.middlewares=redirect@file # uncomment to enable ssl when 443 is ready
@@ -47,6 +48,7 @@ services:
       - traefik.http.routers.service_url2.entrypoints=https
       - traefik.http.routers.service_url2.tls.certresolver=mytlschallenge
       ### Not Secure ###
+      - traefik.http.routers.service_url2-unsecured.service=service_url
       - traefik.http.routers.service_url2-unsecured.rule=Host(`vexsdev.getitqec.com`)
       - traefik.http.routers.service_url2-unsecured.entrypoints=http
       - traefik.http.routers.service_url2-unsecured.middlewares=redirect@file # uncomment to enable ssl when 443 is ready
