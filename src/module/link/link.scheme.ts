@@ -1,6 +1,7 @@
 import { Document } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { IClick, ILink } from './link.interface';
+import * as mongoose from 'mongoose';
 
 export type LinkDocument = Link & Document;
 
@@ -20,6 +21,18 @@ export class Link implements ILink {
   clicks: Click[];
 }
 
+export class Geo {
+  constructor(lat: number, lon: number) {
+    this.coordinates = [lon, lat];
+    this.type = 'Point';
+  }
+
+  @Prop()
+  readonly type: string;
+  @Prop()
+  readonly coordinates: number[];
+}
+
 export class Click implements IClick {
   constructor(data: Partial<Click> = {}) {
     Object.assign(this, data);
@@ -29,18 +42,8 @@ export class Click implements IClick {
   readonly timestamp: number;
 
   // geolocation
-  @Prop()
+  @Prop({ required: false, type: mongoose.Types.EmbeddedDocument })
   readonly loc?: Geo;
-}
-
-export class Geo {
-  constructor(lat: number, lon: number) {
-    this.coordinates = [lon, lat];
-    this.type = 'Point';
-  }
-
-  readonly type: string;
-  readonly coordinates: number[];
 }
 
 export const LinkSchema = SchemaFactory.createForClass(Link);
