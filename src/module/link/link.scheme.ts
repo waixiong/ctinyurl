@@ -30,7 +30,7 @@ export class Click implements IClick {
 
   // geolocation
   @Prop()
-  readonly loc: Geo;
+  readonly loc?: Geo;
 }
 
 export class Geo {
