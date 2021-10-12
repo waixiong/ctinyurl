@@ -38,7 +38,7 @@ services:
       ### Not Secure ###
       - traefik.http.routers.service_url-unsecured.rule=Host(`u.getitqec.com`)
       - traefik.http.routers.service_url-unsecured.entrypoints=http
-      - traefik.http.routers.service_url-unsecured.middlewares=redirect@file # uncomment to enable ssl when 443 is ready
+      # - traefik.http.routers.service_url-unsecured.middlewares=redirect@file # uncomment to enable ssl when 443 is ready
     container_name: service_url
 
 networks:
