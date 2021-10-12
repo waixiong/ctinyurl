@@ -21,7 +21,7 @@ export class Link implements ILink {
 }
 
 export class Click implements IClick {
-  constructor(data: Partial<Link> = {}) {
+  constructor(data: Partial<Click> = {}) {
     Object.assign(this, data);
   }
 
@@ -29,6 +29,18 @@ export class Click implements IClick {
   readonly timestamp: number;
 
   // geolocation
+  @Prop()
+  readonly loc: Geo;
+}
+
+export class Geo {
+  constructor(lat: number, lon: number) {
+    this.coordinates = [lon, lat];
+    this.type = 'Point';
+  }
+
+  readonly type: string;
+  readonly coordinates: number[];
 }
 
 export const LinkSchema = SchemaFactory.createForClass(Link);

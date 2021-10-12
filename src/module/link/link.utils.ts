@@ -1,4 +1,5 @@
 import { Link } from './link.scheme';
+import * as geoip from 'geoip-lite';
 
 export function generateNewLinkObject(url: string): Link {
   return new Link({
@@ -19,4 +20,12 @@ function _randomShortCode(): string {
   }
 
   return outString;
+}
+
+/// return geo [ Lat Lon ]
+export function ipToGeo(ipAddr: string): number[] {
+  const geo = geoip.lookup(ipAddr);
+
+  console.log(geo);
+  return geo?.ll;
 }

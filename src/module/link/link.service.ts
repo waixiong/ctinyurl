@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel, InjectConnection } from '@nestjs/mongoose';
 import { Model, Connection } from 'mongoose';
 import { IClick } from './link.interface';
-import { Link, LinkDocument } from './link.scheme';
+import { Link, LinkDocument, Click } from './link.scheme';
 import { generateNewLinkObject } from './link.utils';
 
 @Injectable()
@@ -41,7 +41,7 @@ export class LinkService {
     await link.save();
   }
 
-  async clickedShortLink(id: string, click: IClick): Promise<Link> {
+  async clickedShortLink(id: string, click: Click): Promise<Link> {
     const link = await this.LinkModel.findOne({ _id: id }).exec();
     if (link == null) {
       throw new NotFoundException();
