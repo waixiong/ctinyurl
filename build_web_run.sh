@@ -9,4 +9,4 @@ npm install
 npm run build
 cp -r ./web/build ./dist/web
 
-sudo docker-compose up -d
+npm run start:prod
