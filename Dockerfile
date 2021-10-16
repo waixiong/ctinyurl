@@ -5,7 +5,7 @@ ENV PATH /app/node_modules/.bin:$PATH
 COPY ./web/package.json ./
 COPY ./web/package-lock.json ./
 RUN npm ci --silent
-RUN sudo npm install react-scripts@4.0.3 -g --silent
+# RUN npm install react-scripts@4.0.3 -g --silent
 COPY ./web/ ./
 RUN npm run build
 
