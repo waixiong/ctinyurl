@@ -3,7 +3,7 @@
   "info": {
     "title": "CTinyURL API",
     "description": "demo tiny url.",
-    "version": "1.0",
+    "version": "0.0.1",
     "contact": {}
   },
   "tags": [
@@ -22,6 +22,51 @@
       }
     },
     "schemas": {
+      "GetShortLinkReponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "clicksCount": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "url",
+          "clicksCount"
+        ]
+      },
+      "GetShortLinkDetailsReponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "clicksCount": {
+            "type": "number"
+          },
+          "clicks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "url",
+          "clicksCount",
+          "clicks"
+        ]
+      },
       "CreateLinkRequestDto": {
         "type": "object",
         "properties": {
@@ -39,6 +84,8 @@
     "/ping": {
       "get": {
         "operationId": "UrlController_getHello",
+        "summary": "",
+        "description": "ping",
         "parameters": [],
         "responses": {
           "200": {
@@ -52,7 +99,37 @@
     },
     "/{id}": {
       "get": {
-        "operationId": "UrlController_redirectTo",
+        "operationId": "redirectTo",
+        "summary": "",
+        "description": "redirect to target url, if exist",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "301": {
+            "description": "Redirect to target, if exist"
+          },
+          "302": {
+            "description": "Redirect to default"
+          }
+        },
+        "tags": [
+          "Root"
+        ]
+      }
+    },
+    "/link/{id}": {
+      "get": {
+        "operationId": "getShortLink",
+        "summary": "",
+        "description": "return basic url object, if exist",
         "parameters": [
           {
             "name": "id",
@@ -65,29 +142,64 @@
         ],
         "responses": {
           "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Root"
-        ]
-      }
-    },
-    "/link": {
-      "get": {
-        "operationId": "LinkController_getHello",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
+            "description": "basic url object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetShortLinkReponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
           }
         },
         "tags": [
           "link"
         ]
-      },
+      }
+    },
+    "/link/{id}/details": {
+      "get": {
+        "operationId": "getShortLinkDetails",
+        "summary": "",
+        "description": "return details url object, with details of every click, if exist",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "details url object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetShortLinkDetailsReponseDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found"
+          }
+        },
+        "tags": [
+          "link"
+        ]
+      }
+    },
+    "/link": {
       "post": {
-        "operationId": "LinkController_createShortLink",
+        "operationId": "createShortLink",
+        "summary": "",
+        "description": "create url short link",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -100,54 +212,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "link"
-        ]
-      }
-    },
-    "/link/{id}": {
-      "get": {
-        "operationId": "LinkController_getShortLink",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
           "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "link"
-        ]
-      }
-    },
-    "/link/{id}/details": {
-      "get": {
-        "operationId": "LinkController_getShortLinkDetails",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
+            "description": "success create object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateLinkRequestDto"
+                }
+              }
             }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
           }
         },
         "tags": [

@@ -1,6 +1,6 @@
-import { Controller, Get, Param, Post, Body } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, HttpStatus } from '@nestjs/common';
 import { LinkService } from './link.service';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import {
   GetShortLinkReponseDto,
   GetShortLinkDetailsReponseDto,
@@ -13,12 +13,20 @@ import {
 export class LinkController {
   constructor(private readonly linkService: LinkService) {}
 
-  @Get()
-  getHello(): string {
-    return this.linkService.getHello();
-  }
-
   @Get(':id')
+  @ApiOperation({
+    operationId: 'getShortLink',
+    description: 'return basic url object, if exist',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'basic url object',
+    type: GetShortLinkReponseDto,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Not found',
+  })
   async getShortLink(
     @Param('id') code: string,
   ): Promise<GetShortLinkReponseDto> {
@@ -31,6 +39,20 @@ export class LinkController {
   }
 
   @Get(':id/details')
+  @ApiOperation({
+    operationId: 'getShortLinkDetails',
+    description:
+      'return details url object, with details of every click, if exist',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'details url object',
+    type: GetShortLinkDetailsReponseDto,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Not found',
+  })
   async getShortLinkDetails(
     @Param('id') code: string,
   ): Promise<GetShortLinkDetailsReponseDto> {
@@ -44,6 +66,15 @@ export class LinkController {
   }
 
   @Post()
+  @ApiOperation({
+    operationId: 'createShortLink',
+    description: 'create url short link',
+  })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'success create object',
+    type: CreateLinkRequestDto,
+  })
   async createShortLink(
     @Body() body: CreateLinkRequestDto,
   ): Promise<CreateShortLinkReponseDto> {

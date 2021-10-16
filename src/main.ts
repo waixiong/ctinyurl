@@ -16,7 +16,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('CTinyURL API')
     .setDescription('demo tiny url.')
-    .setVersion('1.0')
+    .setVersion('0.0.1')
     .addBearerAuth()
     .addTag('tinyurl')
     .build();
