@@ -1,4 +1,8 @@
+import { getModelToken, MongooseModule } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
+import { Model } from 'mongoose';
+import { Link, LinkDocument } from '../link/link.scheme';
+import { LinkService } from '../link/link.service';
 import { UrlController } from './url.controller';
 import { UrlService } from './url.service';
 
@@ -7,8 +11,16 @@ describe('AppController', () => {
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
+      imports: [],
       controllers: [UrlController],
-      providers: [UrlService],
+      providers: [
+        UrlService,
+        LinkService,
+        {
+          provide: getModelToken('Link'),
+          useValue: Model,
+        },
+      ],
     }).compile();
 
     appController = app.get<UrlController>(UrlController);

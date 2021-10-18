@@ -9,7 +9,7 @@ import { generateNewLinkObject } from './link.utils';
 export class LinkService {
   constructor(
     @InjectModel('Link') private readonly LinkModel: Model<LinkDocument>,
-    @InjectConnection() private connection: Connection,
+    // @InjectConnection() private connection: Connection,
   ) {}
 
   getHello(): string {
